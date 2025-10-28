@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
+
     @Autowired
     private UsuarioService usuarioService;
 
@@ -21,10 +22,8 @@ public class UsuarioController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getAll(
-            @Nullable @RequestParam Integer page,
-            @Nullable @RequestParam Integer count
-    ) {
+    public ResponseEntity<Object> getAll(@Nullable @RequestParam Integer page,
+                                         @Nullable @RequestParam Integer count) {
         if (page == null || count == null){
             return ResponseEntity.ok(usuarioService.getCurrent());
         }
@@ -40,10 +39,8 @@ public class UsuarioController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> patch(
-            @PathVariable("id") Integer id,
-            @RequestBody UsuarioPostDto dto
-    ) {
+    public ResponseEntity<Object> patch(@PathVariable("id") Integer id,
+                                        @RequestBody UsuarioPostDto dto) {
         return ResponseEntity.ok(usuarioService.patch(id, dto));
     }
 

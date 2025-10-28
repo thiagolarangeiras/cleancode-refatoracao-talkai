@@ -25,26 +25,39 @@ import java.util.List;
 
 @Service
 public class PlanoEstudoService {
-    @Autowired private PlanoEstudoRepo repo;
-    @Autowired private ExercicioGramaticaComplementarRepo exerGramaComplRepo;
-    @Autowired private ExercicioGramaticaOrdemRepo exerGramaOrdemRepo;
-    @Autowired private ExercicioVocabualrioParesRepo exerVocParesRepo;
 
-    @Autowired private UsuarioService usuarioService;
-    @Autowired private PreferenciaService preferenciaService;
-    @Autowired private GptService gptService;
+    @Autowired
+    private PlanoEstudoRepo planoEstudoRepo;
+
+    @Autowired
+    private ExercicioGramaticaComplementarRepo exercicioGramaticaComplementarRepo;
+
+    @Autowired
+    private ExercicioGramaticaOrdemRepo exercicioGramaticaOrdemRepo;
+
+    @Autowired
+    private ExercicioVocabualrioParesRepo exercicioVocabualrioParesRepo;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private PreferenciaService preferenciaService;
+
+    @Autowired
+    private GptService gptService;
 
     public void addExercicios(PlanoEstudoGetDto dto){
-        dto.exerGramaCompl = exerGramaComplRepo.findByPlanoEstudo(dto.getId())
+        dto.exerGramaCompl = exercicioGramaticaComplementarRepo.findByPlanoEstudo(dto.getId())
                 .stream()
                 .map(ExercicioGramaticaComplementar::mapToDto)
                 .toList();
 
-        dto.exerGramaOrdem = exerGramaOrdemRepo.findByPlanoEstudo(dto.getId())
+        dto.exerGramaOrdem = exercicioGramaticaOrdemRepo.findByPlanoEstudo(dto.getId())
                 .stream()
                 .map(ExercicioGramaticaOrdem::mapToDto)
                 .toList();;
-        dto.exerVocPares =  exerVocParesRepo.findByPlanoEstudo(dto.getId())
+        dto.exerVocPares =  exercicioVocabualrioParesRepo.findByPlanoEstudo(dto.getId())
                 .stream()
                 .map(ExercicioVocabualrioPares::mapToDto)
                 .toList();;
@@ -53,21 +66,21 @@ public class PlanoEstudoService {
     public PlanoEstudoListaGetDto getAll(Integer page, Integer count){
         Pageable pageable = PageRequest.of(page, count);
         var planos = new PlanoEstudoListaGetDto();
-        planos.planos = repo.findByIdUsuario(usuarioService.getCurrentUserid(), pageable)
+        planos.planos = planoEstudoRepo.findByIdUsuario(usuarioService.getCurrentUserid(), pageable)
                 .stream()
                 .map(PlanoEstudo::mapToDto)
                 .toList();
         Integer completos = 0;
         for(var plano : planos.planos){
-            plano.exerGramaCompl = exerGramaComplRepo.findByPlanoEstudo(plano.id)
+            plano.exerGramaCompl = exercicioGramaticaComplementarRepo.findByPlanoEstudo(plano.id)
                     .stream()
                     .map(ExercicioGramaticaComplementar::mapToDto)
                     .toList();
-            plano.exerGramaOrdem = exerGramaOrdemRepo.findByPlanoEstudo(plano.id)
+            plano.exerGramaOrdem = exercicioGramaticaOrdemRepo.findByPlanoEstudo(plano.id)
                     .stream()
                     .map(ExercicioGramaticaOrdem::mapToDto)
                     .toList();
-            plano.exerVocPares = exerVocParesRepo.findByPlanoEstudo(plano.id)
+            plano.exerVocPares = exercicioVocabualrioParesRepo.findByPlanoEstudo(plano.id)
                     .stream()
                     .map(ExercicioVocabualrioPares::mapToDto)
                     .toList();
@@ -81,7 +94,7 @@ public class PlanoEstudoService {
 
     public PlanoEstudoGetDto getId(Integer id){
         Integer userId = usuarioService.getCurrentUserid();
-        PlanoEstudo planoEstudo = repo.findByIdUsuario(id, userId);
+        PlanoEstudo planoEstudo = planoEstudoRepo.findByIdUsuario(id, userId);
         PlanoEstudoGetDto dto = PlanoEstudo.mapToDto(planoEstudo);
         addExercicios(dto);
         return dto;
@@ -89,7 +102,7 @@ public class PlanoEstudoService {
 
     public PlanoEstudoGetDto getCurrent() {
         Integer userId = usuarioService.getCurrentUserid();
-        PlanoEstudo planoEstudo = repo.findByIdUsuarioActive(userId);
+        PlanoEstudo planoEstudo = planoEstudoRepo.findByIdUsuarioActive(userId);
         if(planoEstudo == null){
             return generateNewPlan();
         }
@@ -129,12 +142,12 @@ public class PlanoEstudoService {
                     add(TipoExercicio.GRAMATICA_COMPLEMENTAR);
                 }}
         );
-        var planoAntigo = repo.findByIdUsuarioActive(userId);
+        var planoAntigo = planoEstudoRepo.findByIdUsuarioActive(userId);
         if(planoAntigo != null){
             planoAntigo.setAtivo(false);
-            repo.save(planoAntigo);
+            planoEstudoRepo.save(planoAntigo);
         }
-        repo.save(planoEstudo);
+        planoEstudoRepo.save(planoEstudo);
         Integer i = 0;
         ObjectMapper mapper = new ObjectMapper();
         for(ExercicioGpt exerRespose: exerciciosResponse){
@@ -148,7 +161,7 @@ public class PlanoEstudoService {
                     exercicio.setFraseIncompleta(x.fraseIncompleta);
                     exercicio.setOpcaoCorreta(x.opcaoCorreta);
                     exercicio.setOpcaoIncorreta(x.opcaoIncorreta);
-                    exerGramaComplRepo.save(exercicio);
+                    exercicioGramaticaComplementarRepo.save(exercicio);
                 } break;
                 case TipoExercicio.GRAMATICA_ORDEM: {
                     ExercicioGramaticaOrdemDto x = mapper.convertValue(exerRespose.dados, ExercicioGramaticaOrdemDto.class);
@@ -158,7 +171,7 @@ public class PlanoEstudoService {
                     exercicio.setFraseCompleta(x.fraseCompleta);
                     exercicio.setOrdemCorreta(x.ordemCorreta);
                     exercicio.setOrdemAleatoria(x.ordemAleatoria);
-                    exerGramaOrdemRepo.save(exercicio);
+                    exercicioGramaticaOrdemRepo.save(exercicio);
                 } break;
                 case TipoExercicio.VOCABULARIO_PARES: {
                     ExercicioVocParesDto x = mapper.convertValue(exerRespose.dados, ExercicioVocParesDto.class);
@@ -167,7 +180,7 @@ public class PlanoEstudoService {
                     exercicio.setIdPlanoEstudo(planoEstudo.getId());
                     exercicio.setParesEsquerda(x.paresEsquerda);
                     exercicio.setParesDireita(x.paresDireita);
-                    exerVocParesRepo.save(exercicio);
+                    exercicioVocabualrioParesRepo.save(exercicio);
                 } break;
             }
             i++;
@@ -177,35 +190,35 @@ public class PlanoEstudoService {
 
     public Boolean finalizarPlanoDiario(Integer id){
         Integer userId = usuarioService.getCurrentUserid();
-        PlanoEstudo planoEstudo = repo.findByIdUsuario(id, userId);
+        PlanoEstudo planoEstudo = planoEstudoRepo.findByIdUsuario(id, userId);
         planoEstudo.setFinalizado(true);
-        repo.save(planoEstudo);
+        planoEstudoRepo.save(planoEstudo);
         return true;
     }
 
     public Boolean finalizarExercicio(Integer id, Integer idExercicio){
         Integer userId = usuarioService.getCurrentUserid();
-        PlanoEstudo planoEstudo = repo.findByIdUsuario(id, userId);
+        PlanoEstudo planoEstudo = planoEstudoRepo.findByIdUsuario(id, userId);
 
         // Essa coisa de separar uma tabela para eercicio ficou meio ruim, acho melhor salvar tudo em uma tabela
         // so e salvar os exercicios em um campo json numa tabela geral chamada exercicios, dai fica mais facil
-        ExercicioGramaticaComplementar compl = exerGramaComplRepo.findByUsuario(idExercicio, id);
+        ExercicioGramaticaComplementar compl = exercicioGramaticaComplementarRepo.findByUsuario(idExercicio, id);
         if (compl != null){
             compl.setFinalizado(true);
-            exerGramaComplRepo.save(compl);
+            exercicioGramaticaComplementarRepo.save(compl);
         }
-        ExercicioGramaticaOrdem ordem = exerGramaOrdemRepo.findByUsuario(idExercicio, id);
+        ExercicioGramaticaOrdem ordem = exercicioGramaticaOrdemRepo.findByUsuario(idExercicio, id);
         if (ordem != null){
             ordem.setFinalizado(true);
-            exerGramaOrdemRepo.save(ordem);
+            exercicioGramaticaOrdemRepo.save(ordem);
         }
-        ExercicioVocabualrioPares vocPares = exerVocParesRepo.findByUsuario(idExercicio, id);
+        ExercicioVocabualrioPares vocPares = exercicioVocabualrioParesRepo.findByUsuario(idExercicio, id);
         if (vocPares != null){
             vocPares.setFinalizado(true);
-            exerVocParesRepo.save(vocPares);
+            exercicioVocabualrioParesRepo.save(vocPares);
         }
         planoEstudo.setQtExerciciosFinalizados(planoEstudo.getQtExerciciosFinalizados() + 1);
-        repo.save(planoEstudo);
+        planoEstudoRepo.save(planoEstudo);
         PlanoEstudoGetDto dto = PlanoEstudo.mapToDto(planoEstudo);
         addExercicios(dto);
         return true;

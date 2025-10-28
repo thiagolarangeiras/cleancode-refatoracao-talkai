@@ -12,42 +12,46 @@ import java.util.List;
 @RestController
 @RequestMapping("/preferencia")
 public class PreferenciaController {
-    @Autowired private PreferenciaService service;
+
+    @Autowired
+    private PreferenciaService preferenciaService;
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getOneFromUser(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(service.getOneFromUser(id));
+        return ResponseEntity.ok(preferenciaService.getOneFromUser(id));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> getCurrent() {
-        return ResponseEntity.ok(service.getCurrent());
+        return ResponseEntity.ok(preferenciaService.getCurrent());
     }
 
     @GetMapping("list")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> getAllFromUser(@RequestParam Integer page, @RequestParam Integer count) {
-        return ResponseEntity.ok(service.getAllFromUser(page, count));
+    public ResponseEntity<Object> getAllFromUser(@RequestParam Integer page,
+                                                 @RequestParam Integer count) {
+        return ResponseEntity.ok(preferenciaService.getAllFromUser(page, count));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> post(@RequestBody PreferenciaPostDto dto) {
-        return ResponseEntity.ok(service.post(dto));
+        return ResponseEntity.ok(preferenciaService.post(dto));
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> patch(@PathVariable("id") Integer id, @RequestBody PreferenciaPostDto dto) {
-        return ResponseEntity.ok(service.patch(id, dto));
+    public ResponseEntity<Object> patch(@PathVariable("id") Integer id,
+                                        @RequestBody PreferenciaPostDto dto) {
+        return ResponseEntity.ok(preferenciaService.patch(id, dto));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> delete(@PathVariable("id") Integer id) {
-        service.delete(id);
+        preferenciaService.delete(id);
         return ResponseEntity.ok().build();
     }
 
@@ -55,31 +59,33 @@ public class PreferenciaController {
     @GetMapping("adm/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PreferenciaGetDto> getOneAdm(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(service.getOneAdm(id));
+        return ResponseEntity.ok(preferenciaService.getOneAdm(id));
     }
 
     @GetMapping("adm")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PreferenciaGetDto>> getAllAdm(@RequestParam Integer page, @RequestParam Integer count) {
-        return ResponseEntity.ok(service.getAllAdm(page, count));
+    public ResponseEntity<List<PreferenciaGetDto>> getAllAdm(@RequestParam Integer page,
+                                                             @RequestParam Integer count) {
+        return ResponseEntity.ok(preferenciaService.getAllAdm(page, count));
     }
 
     @PostMapping("adm")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PreferenciaGetDto> postAdm(@RequestBody PreferenciaPostDto dto) {
-        return ResponseEntity.ok(service.postAdm(dto));
+        return ResponseEntity.ok(preferenciaService.postAdm(dto));
     }
 
     @PatchMapping("adm/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PreferenciaGetDto> patchAdm(@PathVariable("id") Integer id, @RequestBody PreferenciaPostDto dto) {
-        return ResponseEntity.ok(service.patchAdm(id, dto));
+    public ResponseEntity<PreferenciaGetDto> patchAdm(@PathVariable("id") Integer id,
+                                                      @RequestBody PreferenciaPostDto dto) {
+        return ResponseEntity.ok(preferenciaService.patchAdm(id, dto));
     }
 
     @DeleteMapping("adm/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PreferenciaGetDto> deleteAdm(@PathVariable("id") Integer id) {
-        service.deleteAdm(id);
+        preferenciaService.deleteAdm(id);
         return ResponseEntity.ok().build();
     }
 }

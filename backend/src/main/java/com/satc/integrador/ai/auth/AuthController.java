@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping
 public class AuthController {
+
     @Autowired
-    private UsuarioService userService;
+    private UsuarioService usuarioService;
 
     @Autowired
     private AuthService authService;
@@ -27,7 +28,7 @@ public class AuthController {
 
     @PostMapping("auth/signin")
     public ResponseEntity<UsuarioCriadoLogadoDto> signin(@RequestBody UsuarioPostDto dto) {
-        return new ResponseEntity<>(userService.post(dto), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioService.post(dto), HttpStatus.OK);
     }
 
     @GetMapping("test")
@@ -41,7 +42,6 @@ public class AuthController {
     public String testLogin() {
         return "Login OK";
     }
-
 
     @GetMapping("test/normal")
     @ResponseStatus(HttpStatus.OK)
