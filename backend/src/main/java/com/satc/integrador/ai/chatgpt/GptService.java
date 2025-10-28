@@ -5,8 +5,8 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatModel;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
-import com.satc.integrador.ai.preference.dto.PreferenciaGetDto;
-import com.satc.integrador.ai.studyplan.ExerciciosCall;
+import com.satc.integrador.ai.preferencia.dto.PreferenciaGetDto;
+import com.satc.integrador.ai.planoestudo.ExerciciosCall;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

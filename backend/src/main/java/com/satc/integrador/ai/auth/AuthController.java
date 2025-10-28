@@ -2,9 +2,9 @@ package com.satc.integrador.ai.auth;
 
 import com.satc.integrador.ai.auth.dto.LoginUserDto;
 import com.satc.integrador.ai.auth.dto.RecoveryJwtTokenDto;
-import com.satc.integrador.ai.user.dto.CreatedLoggedUserDto;
-import com.satc.integrador.ai.user.dto.UsuarioPostDto;
-import com.satc.integrador.ai.user.UsuarioService;
+import com.satc.integrador.ai.usuario.dto.UsuarioCriadoLogadoDto;
+import com.satc.integrador.ai.usuario.dto.UsuarioPostDto;
+import com.satc.integrador.ai.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("auth/signin")
-    public ResponseEntity<CreatedLoggedUserDto> signin(@RequestBody UsuarioPostDto dto) {
+    public ResponseEntity<UsuarioCriadoLogadoDto> signin(@RequestBody UsuarioPostDto dto) {
         return new ResponseEntity<>(userService.post(dto), HttpStatus.OK);
     }
 

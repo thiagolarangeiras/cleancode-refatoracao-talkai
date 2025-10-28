@@ -1,6 +1,6 @@
 package com.satc.integrador.ai.auth;
 
-import com.satc.integrador.ai.user.UsuarioService;
+import com.satc.integrador.ai.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

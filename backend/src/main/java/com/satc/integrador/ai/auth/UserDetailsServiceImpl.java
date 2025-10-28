@@ -1,7 +1,7 @@
 package com.satc.integrador.ai.auth;
 
-import com.satc.integrador.ai.user.Usuario;
-import com.satc.integrador.ai.user.UsuarioRepo;
+import com.satc.integrador.ai.usuario.Usuario;
+import com.satc.integrador.ai.usuario.UsuarioRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
