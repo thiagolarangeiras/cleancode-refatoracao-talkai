@@ -1,11 +1,7 @@
 package com.satc.integrador.ai.exercicio;
 
-import com.satc.integrador.ai.exercicio.dto.ExercicioGramaticaComplementarGetDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -19,34 +15,36 @@ import java.util.List;
 //    }
 //},
 
+@Getter
+@Setter
 @Entity
-@Table(name = "exercicio_gramatica_complementar")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "exercicio_gramatica_complementar")
 public class ExercicioGramaticaComplementar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
+
+    @Column(name = "id_plano_estudo")
     private Integer idPlanoEstudo;
 
+    @Column(name = "frase_completa")
     private String fraseCompleta;
-    private String fraseIncompleta;
-    private String opcaoCorreta;
-    private List<String> opcaoIncorreta;
-    private Boolean finalizado;
 
-    public static ExercicioGramaticaComplementarGetDto mapToDto(ExercicioGramaticaComplementar obj) {
-        return new ExercicioGramaticaComplementarGetDto(
-                obj.getId(),
-                obj.getIdOrdemExercicio(),
-                obj.getIdPlanoEstudo(),
-                obj.getFraseCompleta(),
-                obj.getFraseIncompleta(),
-                obj.getOpcaoCorreta(),
-                obj.getOpcaoIncorreta()
-        );
-    }
+    @Column(name = "frase_incompleta")
+    private String fraseIncompleta;
+
+    @Column(name = "opcao_correta")
+    private String opcaoCorreta;
+
+    @Column(name = "opcao_incorreta")
+    private List<String> opcaoIncorreta;
+
+    @Column(name = "finalizado")
+    private Boolean finalizado;
 }

@@ -36,7 +36,7 @@ public class PlanoEstudoService {
     private ExercicioGramaticaOrdemRepo exercicioGramaticaOrdemRepo;
 
     @Autowired
-    private ExercicioVocabualrioParesRepo exercicioVocabualrioParesRepo;
+    private ExercicioVocabularioParRepo exercicioVocabularioParRepo;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -57,9 +57,9 @@ public class PlanoEstudoService {
                 .stream()
                 .map(ExercicioGramaticaOrdem::mapToDto)
                 .toList();;
-        dto.exerVocPares =  exercicioVocabualrioParesRepo.findByPlanoEstudo(dto.getId())
+        dto.exerVocPares =  exercicioVocabularioParRepo.findByPlanoEstudo(dto.getId())
                 .stream()
-                .map(ExercicioVocabualrioPares::mapToDto)
+                .map(ExercicioVocabularioPar::mapToDto)
                 .toList();;
     }
 
@@ -80,9 +80,9 @@ public class PlanoEstudoService {
                     .stream()
                     .map(ExercicioGramaticaOrdem::mapToDto)
                     .toList();
-            plano.exerVocPares = exercicioVocabualrioParesRepo.findByPlanoEstudo(plano.id)
+            plano.exerVocPares = exercicioVocabularioParRepo.findByPlanoEstudo(plano.id)
                     .stream()
-                    .map(ExercicioVocabualrioPares::mapToDto)
+                    .map(ExercicioVocabularioPar::mapToDto)
                     .toList();
             if(plano.finalizado){
                 completos++;
@@ -175,12 +175,12 @@ public class PlanoEstudoService {
                 } break;
                 case TipoExercicio.VOCABULARIO_PARES: {
                     ExercicioVocParesDto x = mapper.convertValue(exerRespose.dados, ExercicioVocParesDto.class);
-                    ExercicioVocabualrioPares exercicio = new ExercicioVocabualrioPares();
+                    ExercicioVocabularioPar exercicio = new ExercicioVocabularioPar();
                     exercicio.setIdOrdemExercicio(i);
                     exercicio.setIdPlanoEstudo(planoEstudo.getId());
                     exercicio.setParesEsquerda(x.paresEsquerda);
                     exercicio.setParesDireita(x.paresDireita);
-                    exercicioVocabualrioParesRepo.save(exercicio);
+                    exercicioVocabularioParRepo.save(exercicio);
                 } break;
             }
             i++;
@@ -212,10 +212,10 @@ public class PlanoEstudoService {
             ordem.setFinalizado(true);
             exercicioGramaticaOrdemRepo.save(ordem);
         }
-        ExercicioVocabualrioPares vocPares = exercicioVocabualrioParesRepo.findByUsuario(idExercicio, id);
+        ExercicioVocabularioPar vocPares = exercicioVocabularioParRepo.findByUsuario(idExercicio, id);
         if (vocPares != null){
             vocPares.setFinalizado(true);
-            exercicioVocabualrioParesRepo.save(vocPares);
+            exercicioVocabularioParRepo.save(vocPares);
         }
         planoEstudo.setQtExerciciosFinalizados(planoEstudo.getQtExerciciosFinalizados() + 1);
         planoEstudoRepo.save(planoEstudo);

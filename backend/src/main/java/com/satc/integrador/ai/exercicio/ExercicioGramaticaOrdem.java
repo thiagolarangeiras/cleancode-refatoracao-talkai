@@ -1,11 +1,7 @@
 package com.satc.integrador.ai.exercicio;
 
-import com.satc.integrador.ai.exercicio.dto.ExercicioGramaticaOrdemGetDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -18,32 +14,33 @@ import java.util.List;
 //    }
 //},
 
+@Getter
+@Setter
 @Entity
-@Table(name = "exercicio_gramatica_ordem")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "exercicio_gramatica_ordem")
 public class ExercicioGramaticaOrdem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
+
+    @Column(name = "id_plano_estudo")
     private Integer idPlanoEstudo;
 
+    @Column(name = "frase_completa")
     private String fraseCompleta;
-    private List<String> ordemCorreta;
-    private List<String> ordemAleatoria;
-    private Boolean finalizado;
 
-    public static ExercicioGramaticaOrdemGetDto mapToDto(ExercicioGramaticaOrdem obj) {
-        return new ExercicioGramaticaOrdemGetDto(
-                obj.getId(),
-                obj.getIdOrdemExercicio(),
-                obj.getIdPlanoEstudo(),
-                obj.getFraseCompleta(),
-                obj.getOrdemCorreta(),
-                obj.getOrdemAleatoria()
-        );
-    }
+    @Column(name = "ordem_correta")
+    private List<String> ordemCorreta;
+
+    @Column(name = "ordem_aleatoria")
+    private List<String> ordemAleatoria;
+
+    @Column(name = "finalizado")
+    private Boolean finalizado;
 }

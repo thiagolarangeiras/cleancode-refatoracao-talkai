@@ -1,11 +1,7 @@
 package com.satc.integrador.ai.exercicio;
 
-import com.satc.integrador.ai.exercicio.dto.ExercicioVocabularioParesGetDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -17,21 +13,31 @@ import java.util.List;
 //    }
 //},
 
+@Getter
+@Setter
 @Entity
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "exercicio_vocabulario_pares")
-public class ExercicioVocabualrioPares {
+public class ExercicioVocabularioPar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
+
+    @Column(name = "id_plano_estudo")
     private Integer idPlanoEstudo;
 
+    @Column(name = "pares_esquerda")
     private List<String> paresEsquerda;
-    private List<String> paresDireita;
-    private Boolean finalizado;
 
+    @Column(name = "pares_direita")
+    private List<String> paresDireita;
+
+    @Column(name = "finalizado")
+    private Boolean finalizado;
 }

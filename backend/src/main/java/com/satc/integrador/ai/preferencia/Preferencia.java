@@ -1,69 +1,53 @@
 package com.satc.integrador.ai.preferencia;
 
-import com.satc.integrador.ai.preferencia.dto.PreferenciaGetDto;
-import com.satc.integrador.ai.preferencia.dto.PreferenciaPostDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.DayOfWeek;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
 @Entity
-@Table(name = "preferencias")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "preferencias")
 public class Preferencia {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "id_usuario")
     private Integer idUsuario;
 
+    @Column(name = "idioma")
     private String idioma;
-    private List<String> tipoExercicio;
-    private List<String> temas;
-    private String dificuldade;
-    private String nivel;
+
+    @Column(name = "dia_semana")
     private List<DayOfWeek> diaSemana;
+
+    @Column(name = "tipo_exercicio")
+    private List<String> tipoExercicio;
+
+    @Column(name = "temas")
+    private List<String> temas;
+
+    @Column(name = "dificuldade")
+    private String dificuldade;
+
+    @Column(name = "nivel")
+    private String nivel;
+
+    @Column(name = "tempo_minutos")
     private Integer tempoMinutos;
 
     //valores de controle
+    @Column(name = "ativo")
     private Boolean ativo;
+
+    @Column(name = "data_criacao")
     private Date dataCriacao;
-
-    //Mappers
-    public static PreferenciaGetDto mapToDto(Preferencia obj) {
-        return new PreferenciaGetDto(
-                obj.getId(),
-                obj.getIdUsuario(),
-                obj.getIdioma(),
-                obj.getTipoExercicio(),
-                obj.getTemas(),
-                obj.getDificuldade(),
-                obj.getNivel(),
-                obj.getDiaSemana(),
-                obj.getTempoMinutos(),
-                obj.getAtivo()
-        );
-    }
-
-    public static Preferencia mapToObj(PreferenciaPostDto dto) {
-        Preferencia obj = new Preferencia();
-        obj.setIdUsuario(dto.idUsuario());
-        obj.setIdioma(dto.idioma());
-        obj.setTipoExercicio(dto.tipoExercicio());
-        obj.setTemas(dto.temas());
-        obj.setDificuldade(dto.dificuldade());
-        obj.setNivel(dto.nivel());
-        obj.setDiaSemana(dto.diaSemana());
-        obj.setTempoMinutos(dto.tempoMinutos());
-        obj.setAtivo(true);
-        obj.setDataCriacao(new Date());
-        return obj;
-    }
 }

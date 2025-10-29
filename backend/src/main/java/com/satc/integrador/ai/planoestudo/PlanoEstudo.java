@@ -1,79 +1,48 @@
 package com.satc.integrador.ai.planoestudo;
 
 import com.satc.integrador.ai.enums.TipoExercicio;
-import com.satc.integrador.ai.planoestudo.dto.PlanoEstudoGetDto;
-import com.satc.integrador.ai.planoestudo.dto.PlanoEstudoPostDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "plano_estudo")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PlanoEstudo { // Alterar o nome para plano_diario
+@Table(name = "plano_estudo")
+public class PlanoEstudo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "id_usuario")
     private Integer idUsuario;
-    private Integer idPreferencia; //preferencias que moldaram esse plano
 
+    @Column(name = "id_preferencia")
+    private Integer idPreferencia;
+
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "qt_exercicio")
     private Integer qtExercicios;
+
+    @Column(name = "qt_exercicio_finalizados")
     private Integer qtExerciciosFinalizados;
+
+    @Column(name = "tipos_exercicios_contidos")
     private List<TipoExercicio> tiposExerciciosContidos;
+
+    @Column(name = "data")
     private LocalDate data;
+
+    @Column(name = "ativo")
     private Boolean ativo;
+
+    @Column(name = "finalizado")
     private Boolean finalizado;
-
-    public PlanoEstudo(
-            Integer idUsuario,
-            Integer idPreferencia,
-            String nivel,
-            String idioma,
-            Integer qtExercicios,
-            List<TipoExercicio> tiposExerciciosContidos
-    ){
-        this.idUsuario = idUsuario;
-        this.idPreferencia = idPreferencia;
-        this.nome = idioma + " " + nivel;
-        this.qtExercicios = qtExercicios;
-        this.qtExerciciosFinalizados = 0;
-        this.tiposExerciciosContidos = tiposExerciciosContidos;
-        this.data = LocalDate.now();
-        this.ativo = true;
-        this.finalizado = false;
-    }
-
-    //Mappers
-    public static PlanoEstudoGetDto mapToDto(PlanoEstudo obj) {
-        PlanoEstudoGetDto dto = new PlanoEstudoGetDto();
-        dto.id = obj.getId();
-        dto.idUsuario = obj.getIdUsuario();
-        dto.idPreferencia = obj.getIdPreferencia();
-        dto.nome = obj.nome;
-        dto.data = obj.data;
-        dto.qtExercicios = obj.getQtExercicios();
-        dto.qtExerciciosFinalizados = obj.getQtExerciciosFinalizados();
-        dto.tiposExerciciosContidos = obj.getTiposExerciciosContidos();
-        dto.ativo = obj.ativo;
-        dto.finalizado = obj.finalizado;
-        return dto;
-    }
-
-    public static PlanoEstudo mapToObj(PlanoEstudoPostDto dto) {
-        PlanoEstudo obj = new PlanoEstudo();
-        obj.setIdUsuario(dto.idUsuario);
-        obj.setIdPreferencia(dto.idPreferencia);
-        obj.setQtExercicios(dto.qtExerciciosDia);
-        obj.setTiposExerciciosContidos(dto.tiposExerciciosContidos);
-        return obj;
-    }
 }
