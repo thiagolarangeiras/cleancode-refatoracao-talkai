@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ExercicioVocabualrioParesRepo extends JpaRepository<ExercicioVocabualrioPares, Integer> {
+public interface ExercicioVocabualrioParesRepo extends JpaRepository<ExercicioVocabularioPar, Integer> {
 
     @Query(value = "select * from exercicio_vocabulario_pares where id_plano_estudo = ?1", nativeQuery = true)
-    List<ExercicioVocabualrioPares> findByPlanoEstudo(Integer idPlanoEstudo);
+    List<ExercicioVocabularioPar> findByPlanoEstudo(Integer idPlanoEstudo);
 
     @Query(value = "select * from exercicio_vocabulario_pares where id = ?1 and id_plano_estudo = ?2", nativeQuery = true)
-    ExercicioVocabualrioPares findByUsuario(Integer id, Integer idPlanoEstudo);
+    ExercicioVocabularioPar findByUsuario(Integer id, Integer idPlanoEstudo);
 }

@@ -18,11 +18,11 @@ import java.util.List;
 //},
 
 @Entity
-@Table(name = "exercicio_vocabulario_pares")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "exercicio_vocabulario_pares")
 public class ExercicioVocabualrioPares {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +34,4 @@ public class ExercicioVocabualrioPares {
     private List<String> paresDireita;
     private Boolean finalizado;
 
-    public static ExercicioVocabularioParesGetDto mapToDto(ExercicioVocabualrioPares obj) {
-        return new ExercicioVocabularioParesGetDto(
-                obj.getId(),
-                obj.getIdOrdemExercicio(),
-                obj.getIdPlanoEstudo(),
-                obj.getParesEsquerda(),
-                obj.getParesDireita()
-        );
-    }
 }
