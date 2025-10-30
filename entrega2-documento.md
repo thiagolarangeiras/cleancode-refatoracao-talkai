@@ -1,24 +1,31 @@
-# 1. Problemas Encontrados
+# 1 Problemas Encontrados
 
-## 1.1 Nomeclatura:
-- Nomes em protugues e ingles sem nenhuma diferenciação observavel
-- pluralidade e singularidade em nomes de variaveis e classes sem distinção para indentifica objetos como arrays e listas
-- nomes  
-    
+## 1.1 Nomenclatura:
+- Nomes em português e inglês sem nenhuma diferenciação observável.  
+- Pluralidade e singularidade em nomes de variáveis e classes sem distinção para identificar objetos como arrays e listas.
 
-# Estratégia para refatoração desses problemas
+## 1.2 Estrutura do projeto e workflow:
+- Projeto muito centralizado e inteiramente dependente do workflow e dos services do plano de estudo.
 
-## Padrões de nomeclatura utilizados 
-- Todas a classes e variaveis devem estar no singular, exceto quando são utilizadas para listas
-- Todas a classes e variaveis devem estar em portugues, exceto para coisas muito expecificas de tecnologia, onde pode ser usado ingles
+## 1.3 Tratamento de erros e exceções:
+- Ausência de tratamento de erros ou uso de exceções ao identificar processos incorretos.
 
-## Covenção de nomeação: 
-- PascalCase para classes e tipos
-- cameCase para variaveis, Funções e metodos
+# 2 Estratégia para refatoração desses problemas
 
-# Modificações:
+## 2.1 Padrões de nomenclatura utilizados:
+- Todas as classes e variáveis devem estar no singular, exceto quando utilizadas para listas.  
+- Todas as classes e variáveis devem estar em português, exceto para termos muito específicos de tecnologia, onde pode ser usado o inglês.
 
-## bc0ab1f -> rename: nomenclaturas de classes e packages
+## 2.2 Convenção de nomeação:
+- **PascalCase** para classes e tipos.  
+- **camelCase** para variáveis, funções e métodos.
+
+## 2.3 Padrões de Git:
+- **Conventional Commit**: add, remove, refactor, etc.
+
+# 3 Modificações:
+
+## 3.1: bc0ab1f -> rename: nomenclaturas de classes e packages
 
 ### Removido pluradidade de nomes como: 
     ExerciciosGpt -> ExercicioGpt
@@ -27,7 +34,7 @@
 ### Removido mistura de linguagens como:
     /studyplan -> planoestudo
 
-## 9702114, c3a55ef, afc4173 -> refactor: alterado estrutura e formatacao de trechos do codigo
+## 3.2: 9702114, c3a55ef, afc4173 -> refactor: alterado estrutura e formatacao de trechos do codigo
 
 ### Alterado nomes de variaveis como:
     PlanoEstudoService service -> PlanoEstudoService planoEstudoService
