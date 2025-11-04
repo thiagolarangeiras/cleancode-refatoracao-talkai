@@ -6,7 +6,58 @@
 
 ## 1.3 Instalação
 
+### Requesitos:
+- JDK 23, 24 ou 25
+- InteliJ
+- Postgresql
+- Docker
+- Conta OpenAI com chave de API
+- Ultima Versão desse codigo fonte
+
 ## 1.4 Execução
+
+### 1.4.1 Java/Backend
+
+#### Nativa terminal:
+Rodar os comandos a seguir na base do projeto
+```
+./gradlew bootRun
+```
+
+#### Nativa InteliJ:
+Abrir o arquivo `AiApplication.java` clicar no botão de rodar
+
+#### Docker:
+```
+./gradlew clean
+./gradlew build
+docker build --build-arg JAR_FILE=build/libs/integrador-ai-0.0.1.jar -t integrador_ai .
+
+docker run -d -p 8080:8080 \
+-e INT_WEB_POSTGRES_URL="jdbc:postgresql://host.docker.internal:5432/integrador-web" \
+-e INT_WEB_POSTGRES_USER="postgres" \
+-e INT_WEB_POSTGRES_PASS="1234" \
+--name integrador_ai integrador_ai
+```
+
+### 1.4.2 Postgresql
+Instalar a utlima versão do postgresql  
+ou  
+utilizar a versão do docker
+```
+docker pull postgres
+docker run --name postgres1 -e POSTGRES_PASSWORD=1234 -d -p 5432:5432 postgres
+```
+Os dados que seram utilizados para conectar nele serão:
+```
+server: `localhost:5432/postgres`   
+Usuario: `postgres`     
+Senha: `1234`       
+```
+
+### 1.4.3 OpenAPI
+Ao rodar o backend automaticamente o swagger sera servido em    
+`localhost:8080/swagger`
 
 # 2 Refatoração
 
