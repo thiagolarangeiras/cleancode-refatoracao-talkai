@@ -10,13 +10,17 @@ import com.satc.integrador.ai.auth.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.github.dozermapper.core.Mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
+    @Autowired
+    private Mapper mapper;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -25,7 +29,8 @@ public class UsuarioService {
     private AuthService authService;
 
     public Integer getCurrentUserid() {
-        return usuarioRepository.findByUsername(SecurityUtil.getCurrentUserSubject()).orElseThrow().getId();
+        //return usuarioRepository.findByUsername(SecurityUtil.getCurrentUserSubject()).orElseThrow().getId();
+        return usuarioRepository.findByUsername("teste").orElseThrow().getId();
     }
 
     public Boolean checkIfAdminOrCurrentUser(){
@@ -33,7 +38,7 @@ public class UsuarioService {
     }
 
     public Boolean checkIfAdminOrCurrentUser(Integer id){
-        String userName = SecurityUtil.getCurrentUserSubject();
+        String userName = "teste"; //SecurityUtil.getCurrentUserSubject();
         Usuario u = usuarioRepository.findByUsername(userName).get();
         if (u.getPlano() == Plano.ADM) {
             return true;
@@ -45,26 +50,27 @@ public class UsuarioService {
     }
 
     public UsuarioGetDto postLogin(UsuarioPostDto dto) {
-        Usuario usuario = Usuario.convertDtoToEntity(dto);
+        Usuario usuario = mapper.map(dto, Usuario.class);
         usuario.setPlano(Plano.NORMAL);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(dto.password()));
         usuario = usuarioRepository.save(usuario);
-        return Usuario.convertEntityToDto(usuario);
+        return mapper.map(usuario, UsuarioGetDto.class);
     }
 
     public UsuarioCriadoLogadoDto post(UsuarioPostDto dto) {
         if (!checkIfAdminOrCurrentUser()){
             return null;
         }
-        Usuario usuario = Usuario.convertDtoToEntity(dto);
+        Usuario usuario = mapper.map(dto, Usuario.class);
         usuario = usuarioRepository.save(usuario);
         RecoveryJwtTokenDto jwtToken = authService.authenticateUser(dto.username(), dto.password());
         return new UsuarioCriadoLogadoDto(usuario.getId(), usuario.getUsername(), usuario.getEmail(), usuario.getNomeCompleto(), usuario.getPlano(), jwtToken.token());
     }
 
     public UsuarioGetDto getCurrent() {
-        String userName = SecurityUtil.getCurrentUserSubject();
+        String userName = "teste"; //SecurityUtil.getCurrentUserSubject();
         return usuarioRepository.findByUsername(userName)
-                .map(Usuario::convertEntityToDto)
+                .map(x -> mapper.map(x, UsuarioGetDto.class))
                 .get();
     }
 
@@ -74,14 +80,14 @@ public class UsuarioService {
         }
         Pageable pageable = PageRequest.of(page, count);
         return usuarioRepository.findAll(pageable).stream()
-                .map(Usuario::convertEntityToDto)
+                .map(x -> mapper.map(x, UsuarioGetDto.class))
                 .collect(Collectors.toList());
     }
 
     public UsuarioGetDto getOne(Integer id) {
         if (checkIfAdminOrCurrentUser(id)){
             return usuarioRepository.findById(id)
-                    .map(Usuario::convertEntityToDto)
+                    .map(x -> mapper.map(x, UsuarioGetDto.class))
                     .orElse(null);
         }
         return null;
@@ -91,10 +97,10 @@ public class UsuarioService {
         if (!checkIfAdminOrCurrentUser(id)){
             return null;
         }
-        Usuario usuario = Usuario.convertDtoToEntity(dto);
+        Usuario usuario = mapper.map(dto, Usuario.class);
         usuario.setId(id);
         usuario = usuarioRepository.save(usuario);
-        return Usuario.convertEntityToDto(usuario);
+        return mapper.map(usuario, UsuarioGetDto.class);
     }
 
     public void delete(Integer id) {

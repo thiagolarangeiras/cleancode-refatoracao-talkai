@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.satc.integrador.ai.auth.SecurityUtil;
 import com.satc.integrador.ai.auth.UserDetailsImpl;
-import com.satc.integrador.ai.chatgpt.GptService;
+import com.satc.integrador.ai.chatgpt.IGptService;
 import com.satc.integrador.ai.chatgpt.dto.ExercicioGramaticaComplDto;
 import com.satc.integrador.ai.chatgpt.dto.ExercicioGramaticaOrdemDto;
 import com.satc.integrador.ai.chatgpt.dto.ExercicioVocParesDto;
@@ -45,7 +45,7 @@ public class PlanoEstudoService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private GptService gptService;
+    private IGptService gptService;
 
     public PlanoEstudoListaGetDto getAll(){
         UserDetailsImpl userDetails = SecurityUtil.getCurrentLoggedUser();

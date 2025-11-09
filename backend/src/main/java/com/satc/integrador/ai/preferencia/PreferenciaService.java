@@ -1,8 +1,11 @@
 package com.satc.integrador.ai.preferencia;
 
+import com.github.dozermapper.core.Mapper;
 import com.satc.integrador.ai.preferencia.dto.PreferenciaGetDto;
 import com.satc.integrador.ai.preferencia.dto.PreferenciaPostDto;
+import com.satc.integrador.ai.usuario.Usuario;
 import com.satc.integrador.ai.usuario.UsuarioService;
+import com.satc.integrador.ai.usuario.dto.UsuarioGetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +20,9 @@ import java.util.stream.Collectors;
 public class PreferenciaService {
 
     @Autowired
+    private Mapper mapper;
+
+    @Autowired
     private PreferenciaRepository repo;
 
     @Autowired
@@ -26,18 +32,18 @@ public class PreferenciaService {
         Pageable pageable = PageRequest.of(page, count);
         return repo.findByIdUsuario(usuarioService.getCurrentUserid(), pageable)
                 .stream()
-                .map(Preferencia::mapToDto)
+                .map(x -> mapper.map(x, PreferenciaGetDto.class))
                 .toList();
     }
 
     public PreferenciaGetDto getOneFromUser(Integer id) {
         Preferencia p = repo.findByIdFromUser(id, usuarioService.getCurrentUserid());
-        return Preferencia.mapToDto(p);
+        return mapper.map(p, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto getCurrent() {
         Preferencia p = repo.findByIdUsuarioActive(usuarioService.getCurrentUserid());
-        return Preferencia.mapToDto(p);
+        return mapper.map(p, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto post(PreferenciaPostDto dto) {
@@ -47,11 +53,11 @@ public class PreferenciaService {
             pActive.setAtivo(false);
             repo.save(pActive);
         }
-        Preferencia preferencia = Preferencia.mapToObj(dto);
+        Preferencia preferencia = mapper.map(dto, Preferencia.class);
         preferencia.setIdUsuario(idUser);
         preferencia.setAtivo(true);
         preferencia = repo.save(preferencia);
-        return Preferencia.mapToDto(preferencia);
+        return mapper.map(preferencia, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto patch(Integer id, PreferenciaPostDto dto) {
@@ -60,11 +66,11 @@ public class PreferenciaService {
         if (p.getIdUsuario() != userId){
             throw new AccessDeniedException("Usuario sem permissão");
         }
-        p = Preferencia.mapToObj(dto);
+        p = mapper.map(dto, Preferencia.class);
         p.setId(id);
         p.setIdUsuario(userId);
         p = repo.save(p);
-        return Preferencia.mapToDto(p);
+        return mapper.map(p, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto delete(Integer id) {
@@ -73,35 +79,33 @@ public class PreferenciaService {
             throw new AccessDeniedException("Usuario sem permissão");
         }
         repo.delete(p);
-        return Preferencia.mapToDto(p);
+        return mapper.map(p, PreferenciaGetDto.class);
     }
 
     public List<PreferenciaGetDto> getAllAdm(int page, int count) {
         Pageable pageable = PageRequest.of(page, count);
         return repo.findAll(pageable)
                 .stream()
-                .map(Preferencia::mapToDto)
+                .map(x -> mapper.map(x, PreferenciaGetDto.class))
                 .collect(Collectors.toList());
     }
 
     public PreferenciaGetDto getOneAdm(Integer id) {
-        Optional<Preferencia> clienteOptional = repo.findById(id);
-        Preferencia cliente = clienteOptional.orElseThrow();;
-        return Preferencia.mapToDto(cliente);
+        Preferencia preferencia = repo.findById(id).orElseThrow();
+        return mapper.map(preferencia, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto postAdm(PreferenciaPostDto dto) {
-        Preferencia preferencia = Preferencia.mapToObj(dto);
+        Preferencia preferencia = mapper.map(dto, Preferencia.class);
         preferencia = repo.save(preferencia);
-        return Preferencia.mapToDto(preferencia);
+        return mapper.map(preferencia, PreferenciaGetDto.class);
     }
 
     public PreferenciaGetDto patchAdm(Integer id, PreferenciaPostDto dto) {
-        Preferencia preferencia = repo.findById(id).orElseThrow();
-        preferencia = Preferencia.mapToObj(dto);
+        Preferencia preferencia = mapper.map(dto, Preferencia.class);
         preferencia.setId(id);
         preferencia = repo.save(preferencia);
-        return Preferencia.mapToDto(preferencia);
+        return mapper.map(preferencia, PreferenciaGetDto.class);
     }
 
     public void deleteAdm(Integer id) {
