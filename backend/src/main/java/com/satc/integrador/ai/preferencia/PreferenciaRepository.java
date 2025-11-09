@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface PreferenciaRepo extends JpaRepository<Preferencia, Integer> {
-    //Optional<Page<Preferencia>> findById(Integer id, Pageable pageable);
+public interface PreferenciaRepository extends JpaRepository<Preferencia, Integer> {
+
     Page<Preferencia> findByIdUsuario(Integer idUsuario, Pageable pageable);
 
     @Query(value = "select * from preferencias where id_usuario = ?1 and ativo = true LIMIT 1", nativeQuery = true)

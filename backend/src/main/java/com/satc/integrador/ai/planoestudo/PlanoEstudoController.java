@@ -1,6 +1,5 @@
 package com.satc.integrador.ai.planoestudo;
 
-import com.satc.integrador.ai.planoestudo.dto.PlanoEstudoGetDto;
 import com.satc.integrador.ai.planoestudo.dto.PlanoEstudoListaGetDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,37 +15,37 @@ public class PlanoEstudoController {
 
     @PostMapping("generate-new-plan")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlanoEstudoGetDto> generateNewPlan() {
-        return ResponseEntity.ok(planoEstudoService.generateNewPlan());
+    public ResponseEntity<PlanoEstudo> generateNewPlan() {
+        return ResponseEntity.ok(planoEstudoService.handleNewPlan());
     }
 
     @GetMapping("today")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlanoEstudoGetDto> get() {
+    public ResponseEntity<PlanoEstudo> get() {
         return ResponseEntity.ok(planoEstudoService.getCurrent());
     }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlanoEstudoGetDto> getid(@PathVariable Integer id) {
-        return ResponseEntity.ok(planoEstudoService.getId(id));
+    public ResponseEntity<PlanoEstudo> getByid(@PathVariable Integer id) {
+        return ResponseEntity.ok(planoEstudoService.getById(id));
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PlanoEstudoListaGetDto> getAll(@RequestParam Integer page,
-                                                         @RequestParam Integer count) {
-        return ResponseEntity.ok(planoEstudoService.getAll(page, count));
+    public ResponseEntity<PlanoEstudoListaGetDto> getAll() {
+        return ResponseEntity.ok(planoEstudoService.getAll());
     }
 
     @PostMapping("{id}/finalizar-exercicio/{id-exercicio}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Boolean> finalizarExercicio(@PathVariable Integer id,
+    public ResponseEntity<ResponseEntity> finalizarExercicio(@PathVariable Integer id,
                                                       @PathVariable("id-exercicio") Integer idExercicio) {
-        return ResponseEntity.ok(planoEstudoService.finalizarExercicio(id, idExercicio));
+        planoEstudoService.finalizarExercicio(id, idExercicio);
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("{id}/finalizar")
+    @PostMapping("{id}/finalizar-plano-diario")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> finalizarPlanoDiario(@PathVariable Integer id) {
         return ResponseEntity.ok(planoEstudoService.finalizarPlanoDiario(id));

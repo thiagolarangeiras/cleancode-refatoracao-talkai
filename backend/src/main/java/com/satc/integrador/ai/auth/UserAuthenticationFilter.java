@@ -1,7 +1,7 @@
 package com.satc.integrador.ai.auth;
 
 import com.satc.integrador.ai.usuario.Usuario;
-import com.satc.integrador.ai.usuario.UsuarioRepo;
+import com.satc.integrador.ai.usuario.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 @Component
 public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Autowired private JwtTokenService jwtTokenService;
-    @Autowired private UsuarioRepo userRepository;
+    @Autowired private UsuarioRepository userRepository;
 
     @Override
     protected void doFilterInternal(

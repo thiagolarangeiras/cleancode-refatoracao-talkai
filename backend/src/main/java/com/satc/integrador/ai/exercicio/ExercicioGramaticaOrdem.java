@@ -1,5 +1,6 @@
 package com.satc.integrador.ai.exercicio;
 
+import com.satc.integrador.ai.planoestudo.PlanoEstudo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,8 +30,9 @@ public class ExercicioGramaticaOrdem {
     @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
 
-    @Column(name = "id_plano_estudo")
-    private Integer idPlanoEstudo;
+    @ManyToOne
+    @JoinColumn(name = "id_plano_estudo")
+    private PlanoEstudo planoEstudo;
 
     @Column(name = "frase_completa")
     private String fraseCompleta;

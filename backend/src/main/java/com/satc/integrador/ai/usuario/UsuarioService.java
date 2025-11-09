@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepo usuarioRepo;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
     private AuthService authService;
 
     public Integer getCurrentUserid() {
-        return usuarioRepo.findByUsername(SecurityUtil.getCurrentUserSubject()).orElseThrow().getId();
+        return usuarioRepository.findByUsername(SecurityUtil.getCurrentUserSubject()).orElseThrow().getId();
     }
 
     public Boolean checkIfAdminOrCurrentUser(){
@@ -34,7 +34,7 @@ public class UsuarioService {
 
     public Boolean checkIfAdminOrCurrentUser(Integer id){
         String userName = SecurityUtil.getCurrentUserSubject();
-        Usuario u = usuarioRepo.findByUsername(userName).get();
+        Usuario u = usuarioRepository.findByUsername(userName).get();
         if (u.getPlano() == Plano.ADM) {
             return true;
         }
@@ -47,7 +47,7 @@ public class UsuarioService {
     public UsuarioGetDto postLogin(UsuarioPostDto dto) {
         Usuario usuario = Usuario.convertDtoToEntity(dto);
         usuario.setPlano(Plano.NORMAL);
-        usuario = usuarioRepo.save(usuario);
+        usuario = usuarioRepository.save(usuario);
         return Usuario.convertEntityToDto(usuario);
     }
 
@@ -56,14 +56,14 @@ public class UsuarioService {
             return null;
         }
         Usuario usuario = Usuario.convertDtoToEntity(dto);
-        usuario = usuarioRepo.save(usuario);
+        usuario = usuarioRepository.save(usuario);
         RecoveryJwtTokenDto jwtToken = authService.authenticateUser(dto.username(), dto.password());
         return new UsuarioCriadoLogadoDto(usuario.getId(), usuario.getUsername(), usuario.getEmail(), usuario.getNomeCompleto(), usuario.getPlano(), jwtToken.token());
     }
 
     public UsuarioGetDto getCurrent() {
         String userName = SecurityUtil.getCurrentUserSubject();
-        return usuarioRepo.findByUsername(userName)
+        return usuarioRepository.findByUsername(userName)
                 .map(Usuario::convertEntityToDto)
                 .get();
     }
@@ -73,14 +73,14 @@ public class UsuarioService {
             return null;
         }
         Pageable pageable = PageRequest.of(page, count);
-        return usuarioRepo.findAll(pageable).stream()
+        return usuarioRepository.findAll(pageable).stream()
                 .map(Usuario::convertEntityToDto)
                 .collect(Collectors.toList());
     }
 
     public UsuarioGetDto getOne(Integer id) {
         if (checkIfAdminOrCurrentUser(id)){
-            return usuarioRepo.findById(id)
+            return usuarioRepository.findById(id)
                     .map(Usuario::convertEntityToDto)
                     .orElse(null);
         }
@@ -93,7 +93,7 @@ public class UsuarioService {
         }
         Usuario usuario = Usuario.convertDtoToEntity(dto);
         usuario.setId(id);
-        usuario = usuarioRepo.save(usuario);
+        usuario = usuarioRepository.save(usuario);
         return Usuario.convertEntityToDto(usuario);
     }
 
@@ -101,6 +101,6 @@ public class UsuarioService {
         if (!checkIfAdminOrCurrentUser(id)){
             return;
         }
-        usuarioRepo.deleteById(id);
+        usuarioRepository.deleteById(id);
     }
 }

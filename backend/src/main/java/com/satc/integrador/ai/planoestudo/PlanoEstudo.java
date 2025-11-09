@@ -1,6 +1,9 @@
 package com.satc.integrador.ai.planoestudo;
 
 import com.satc.integrador.ai.enums.TipoExercicio;
+import com.satc.integrador.ai.exercicio.ExercicioGramaticaComplementar;
+import com.satc.integrador.ai.exercicio.ExercicioGramaticaOrdem;
+import com.satc.integrador.ai.exercicio.ExercicioVocabularioPar;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +14,6 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "plano_estudo")
 public class PlanoEstudo {
 
@@ -45,4 +47,33 @@ public class PlanoEstudo {
 
     @Column(name = "finalizado")
     private Boolean finalizado;
+
+    @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
+    private List<ExercicioGramaticaComplementar> exercicioGramaticaComplementares;
+
+    @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
+    private List<ExercicioGramaticaOrdem> exercicioGramaticaOrdens;
+
+    @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
+    private List<ExercicioVocabularioPar> exercicioVocabularioPares;
+
+    public PlanoEstudo(Integer idUsuario,
+                       Integer idPreferencia,
+                       String nome,
+                       Integer qtExercicios,
+                       Integer qtExerciciosFinalizados,
+                       List<TipoExercicio> tiposExerciciosContidos,
+                       LocalDate data,
+                       Boolean ativo,
+                       Boolean finalizado) {
+        this.idUsuario = idUsuario;
+        this.idPreferencia = idPreferencia;
+        this.nome = nome;
+        this.qtExercicios = qtExercicios;
+        this.qtExerciciosFinalizados = qtExerciciosFinalizados;
+        this.tiposExerciciosContidos = tiposExerciciosContidos;
+        this.data = data;
+        this.ativo = ativo;
+        this.finalizado = finalizado;
+    }
 }

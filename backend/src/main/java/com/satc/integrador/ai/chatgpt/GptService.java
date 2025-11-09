@@ -5,6 +5,7 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatModel;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.satc.integrador.ai.preferencia.Preferencia;
 import com.satc.integrador.ai.preferencia.dto.PreferenciaGetDto;
 import com.satc.integrador.ai.planoestudo.ExerciciosCall;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,7 @@ public class GptService {
                 .build();
     }
 
-    public String gerarExercicios(PreferenciaGetDto preferencia, List<ExerciciosCall> exercicios) {
+    public String gerarExercicios(Preferencia preferencia, List<ExerciciosCall> exercicios) {
         String promptFinal = montarPromptCompleto(preferencia, exercicios);
 
         String systemMessage = "Voce é um auxiliador de plano de estudos e professor de linguagens, que deve gerar respostas estritamente no formato JSON, seguindo as regras fornecidas.";
@@ -34,8 +35,8 @@ public class GptService {
         return chat.choices().get(0).message().content().get();
     }
 
-    private String montarPromptCompleto(PreferenciaGetDto preferencia, List<ExerciciosCall> exercicios) {
-        String temasFormatados = String.join(", ", preferencia.temas());
+    private String montarPromptCompleto(Preferencia preferencia, List<ExerciciosCall> exercicios) {
+        String temasFormatados = String.join(", ", preferencia.getTemas());
 
         String descricaoExercicios = exercicios.stream()
                 .map(ex -> String.format("%d exercícios do tipo %s", ex.qtExercicio, ex.tipo))
@@ -48,7 +49,7 @@ public class GptService {
 
         return promptBase
                 .replace("[NUMERO_DE_EXERCICIOS]", String.valueOf(totalExercicios))
-                .replace("[IDIOMA]", preferencia.idioma())
+                .replace("[IDIOMA]", preferencia.getIdioma())
                 .replace("[TEMA]",
                         String.format("Foque nos seguintes temas: %s. Gere esta quantidade de exercícios: %s.",
                                 temasFormatados, descricaoExercicios));

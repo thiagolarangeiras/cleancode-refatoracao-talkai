@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class PreferenciaService {
 
     @Autowired
-    private PreferenciaRepo repo;
+    private PreferenciaRepository repo;
 
     @Autowired
     private UsuarioService usuarioService;
