@@ -40,7 +40,7 @@ Além disso, o backend gerencia autenticação de usuários, armazenamento segur
 
 ### Requesitos:
 - JDK 23, 24 ou 25
-- InteliJ
+- IntelliJ
 - Postgresql
 - Docker
 - Conta OpenAI com chave de API
@@ -50,16 +50,21 @@ Além disso, o backend gerencia autenticação de usuários, armazenamento segur
 
 ### 1.4.1 Java/Backend
 
+Atenção o ambiente de execução local está configurado para não realizar as chamadas para a API da OpenAI, por motivos de segurança e praticidade na execução local.
+
+Alterar o ambiente de execução para `prod` case queira rodar utilizando a API 
+
 #### Nativa terminal:
 Rodar os comandos a seguir na base do projeto
 ```
 ./gradlew bootRun
 ```
 
-#### Nativa InteliJ:
+#### Nativa IntelliJ:
 Abrir o arquivo `AiApplication.java` clicar no botão de rodar
 
 #### Docker:
+Apenas para publicação, ainda é necessario compilar o codigo localmente
 ```
 ./gradlew clean
 ./gradlew build
@@ -73,9 +78,10 @@ docker run -d -p 8080:8080 \
 ```
 
 ### 1.4.2 Postgresql
-Instalar a utlima versão do postgresql  
-ou  
-utilizar a versão do docker
+
+Necessario apenas para execução em ambiente de produção, para execução local já está configurado o H2
+
+Instalar a utlima versão do postgresql ou utilizar a versão do docker
 ```
 docker pull postgres
 docker run --name postgres1 -e POSTGRES_PASSWORD=1234 -d -p 5432:5432 postgres
@@ -122,6 +128,10 @@ Ao rodar o backend automaticamente o swagger sera servido em
 
 ## 2.2.3 Padrões de Git:
 - **Conventional Commit**: add, remove, refactor, etc.
+
+## 2.2.4 Linter
+- Utilizado o CheckStyle e seu pluggin para o Intellij `CheckStyle-IDE` com os padrões do Google, para analisar o codigo.
+- Utilizado o formatador do IntelliJ, para formatar o codigo.
 
 ## 2.3 Testes
 Adicionado 1 teste para cada metodos dos services `PlanoEstudoService`, `PreferenciaService`, `UsuarioService` e 1 teste para cada metodo dos Controllers `PlanoEstudoController`, `PreferenciaController`, `UsuarioController` 

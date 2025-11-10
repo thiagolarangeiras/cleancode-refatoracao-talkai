@@ -3,13 +3,20 @@ package com.satc.integrador.ai.preferencia.dto;
 import java.time.DayOfWeek;
 import java.util.List;
 
-public record PreferenciaPostDto(
-        Integer idUsuario,
-        String idioma,
-        List<String> tipoExercicio,
-        List<String> temas,
-        String dificuldade,
-        String nivel,
-        List<DayOfWeek> diaSemana,
-        Integer tempoMinutos
-) { }
+import lombok.*;
+
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PreferenciaPostDto {
+    private Integer idUsuario;
+    private String idioma;
+    private List<String> tipoExercicio;
+    private List<String> temas;
+    private String dificuldade;
+    private String nivel;
+    private List<DayOfWeek> diaSemana;
+    private Integer tempoMinuto;
+}

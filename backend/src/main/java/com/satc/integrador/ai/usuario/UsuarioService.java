@@ -29,8 +29,7 @@ public class UsuarioService {
     private AuthService authService;
 
     public Integer getCurrentUserid() {
-        //return usuarioRepository.findByUsername(SecurityUtil.getCurrentUserSubject()).orElseThrow().getId();
-        return usuarioRepository.findByUsername("teste").orElseThrow().getId();
+        return usuarioRepository.findByUsername(SecurityUtil.getCurrentLoggedUser().getUsername()).orElseThrow().getId();
     }
 
     public Boolean checkIfAdminOrCurrentUser(){
@@ -38,7 +37,7 @@ public class UsuarioService {
     }
 
     public Boolean checkIfAdminOrCurrentUser(Integer id){
-        String userName = "teste"; //SecurityUtil.getCurrentUserSubject();
+        String userName = SecurityUtil.getCurrentLoggedUser().getUsername();
         Usuario u = usuarioRepository.findByUsername(userName).get();
         if (u.getPlano() == Plano.ADM) {
             return true;
@@ -52,7 +51,7 @@ public class UsuarioService {
     public UsuarioGetDto postLogin(UsuarioPostDto dto) {
         Usuario usuario = mapper.map(dto, Usuario.class);
         usuario.setPlano(Plano.NORMAL);
-        usuario.setPassword(new BCryptPasswordEncoder().encode(dto.password()));
+        usuario.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         usuario = usuarioRepository.save(usuario);
         return mapper.map(usuario, UsuarioGetDto.class);
     }
@@ -62,13 +61,14 @@ public class UsuarioService {
             return null;
         }
         Usuario usuario = mapper.map(dto, Usuario.class);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         usuario = usuarioRepository.save(usuario);
-        RecoveryJwtTokenDto jwtToken = authService.authenticateUser(dto.username(), dto.password());
+        RecoveryJwtTokenDto jwtToken = authService.authenticateUser(dto.getUsername(), dto.getPassword());
         return new UsuarioCriadoLogadoDto(usuario.getId(), usuario.getUsername(), usuario.getEmail(), usuario.getNomeCompleto(), usuario.getPlano(), jwtToken.token());
     }
 
     public UsuarioGetDto getCurrent() {
-        String userName = "teste"; //SecurityUtil.getCurrentUserSubject();
+        String userName = SecurityUtil.getCurrentLoggedUser().getUsername();
         return usuarioRepository.findByUsername(userName)
                 .map(x -> mapper.map(x, UsuarioGetDto.class))
                 .get();

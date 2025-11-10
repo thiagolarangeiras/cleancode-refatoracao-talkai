@@ -1,12 +1,18 @@
 package com.satc.integrador.ai.usuario.dto;
 
 import com.satc.integrador.ai.enums.Plano;
+import lombok.*;
 
-public record UsuarioCriadoLogadoDto(
-        Integer id,
-        String username,
-        String email,
-        String nomeCompleto,
-        Plano plano,
-        String jwtToken
-) {}
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UsuarioCriadoLogadoDto {
+    private Integer id;
+    private String username;
+    private String email;
+    private String nomeCompleto;
+    private Plano plano;
+    private String jwtToken;
+}

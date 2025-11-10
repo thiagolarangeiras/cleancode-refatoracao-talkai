@@ -1,13 +1,17 @@
 package com.satc.integrador.ai.usuario.dto;
 
 import com.satc.integrador.ai.enums.Plano;
-import lombok.Builder;
+import lombok.*;
 
 @Builder
-public record UsuarioGetDto(
-        Integer id,
-        String username,
-        String email,
-        String nomeCompleto,
-        Plano plano
-) { }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UsuarioGetDto {
+    private Integer id;
+    private String username;
+    private String email;
+    private String nomeCompleto;
+    private Plano plan;
+}

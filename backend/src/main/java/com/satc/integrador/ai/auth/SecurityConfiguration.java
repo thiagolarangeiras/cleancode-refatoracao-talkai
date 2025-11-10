@@ -44,6 +44,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
+                .headers(h -> h.frameOptions(f -> f.disable()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
