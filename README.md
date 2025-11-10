@@ -1,8 +1,40 @@
 # 1 Sobre
 
 ## 1.1 Descrição
+Este projeto apresenta um aplicativo para o aprendizado de idiomas, utilizando inteligência artificial para personalizar a experiência de aprendizado do usuário.     
+
+O backend deste projeto é responsável por gerenciar toda a lógica do aplicativo de aprendizado de idiomas, garantindo uma experiência personalizada e eficiente para cada usuário. Ele atua como o núcleo que conecta o usuário à inteligência artificial, processando dados de perfil, histórico de aprendizado e preferências individuais para oferecer conteúdos adaptados às necessidades de cada pessoa.
+
+Uma das funcionalidades centrais do backend é a integração com o ChatGPT, que é utilizada para gerar exercícios e atividades de aprendizado de forma dinâmica. Com base no nível do usuário, nos tópicos estudados e nos objetivos definidos, o ChatGPT cria exercícios personalizados, como traduções, perguntas de compreensão, diálogos simulados e quizzes interativos, tornando o aprendizado mais envolvente e eficaz.
+
+Além disso, o backend gerencia autenticação de usuários, armazenamento seguro de dados, rastreamento de progresso e comunicação entre o aplicativo e o modelo de IA, garantindo que toda a experiência seja fluida e confiável. Essa estrutura permite que o aplicativo ofereça um aprendizado de idiomas adaptativo, capaz de evoluir junto com o usuário.
 
 ## 1.2 Funcionalidades
+
+### 1.2.1 Gerenciamento de usuários
+- Cadastro, login e autenticação segura.
+- Armazenamento e atualização de perfis/dados de usuários.
+
+### 1.2.2 Personalização do aprendizado
+- Registro do histórico de aprendizado de cada usuário.
+- Ajuste do nível de dificuldade dos exercícios com base no desempenho.
+- Recomendações de conteúdos e atividades personalizadas.
+
+### 1.2.3 Geração de exercícios com IA
+- Integração com o ChatGPT para criação dinâmica de exercícios.
+- Produção de atividades como traduções, quizzes, diálogos simulados e perguntas de compreensão.
+- Adaptação dos exercícios conforme o progresso do usuário.
+
+### 1.2.4 Gerenciamento de progresso
+- Armazenamento de resultados e métricas de desempenho.
+- Rastreamento de evolução ao longo do tempo.
+
+### 1.2.5 Comunicação com o front-end
+- Disponibilização de APIs para que o aplicativo móvel ou web consuma dados e receba exercícios.
+- Envio de respostas e feedback do usuário para o sistema de IA.
+
+### 1.2.6 Segurança
+- Proteção de dados sensíveis do usuário.
 
 ## 1.3 Instalação
 
