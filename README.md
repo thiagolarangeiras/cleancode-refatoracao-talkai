@@ -73,6 +73,11 @@ Ao rodar o backend automaticamente o swagger sera servido em
 ### 2.1.3 Tratamento de erros e exceções:
 - Ausência de tratamento de erros ou uso de exceções ao identificar processos incorretos.
 
+### 2.1.4 Code Smells
+- Dead Code (codigos que não são utilizados) `Varias ocorencias`
+- Comments (Comentarios desnecessarios) `Varias ocorencias`
+- Long Method (um metodo muito longo, que faz muitas coisas) `PlanoEstudoService.generateNewPlan()`
+
 ## 2.2 Estrategias de refatoração
 
 ### 2.2.1 Padrões de nomenclatura utilizados:
@@ -87,8 +92,43 @@ Ao rodar o backend automaticamente o swagger sera servido em
 - **Conventional Commit**: add, remove, refactor, etc.
 
 ## 2.3 Testes
+Adicionado 1 teste para cada metodos dos services `PlanoEstudoService`, `PreferenciaService`, `UsuarioService` e 1 teste para cada metodo dos Controllers `PlanoEstudoController`, `PreferenciaController`, `UsuarioController` 
 
 ## 2.3 Interface fluente
+### Proposta de interface fluente 1: 
+Na Criação do plano de estudo, fazer uma interface fluente para adicionar os dados do plano de estudo, fazer a chamada para o gpt e salvar os dados. substituindo a função `PlanoEstudoService.handleNewPlan()`.   
+Exemplo:
+```
+PlanoEstudo planoNovo = PlanoEstudoBuilder.newPlan()
+        .withCurrentUser()
+        .loadPreferencia()
+        .generateExercicios()
+        .createPlan()
+        .disableOldPlan()
+        .buildExercicios()
+        .build();
+```
+### Proposta de interface fluente 2:
+Fazer um builder de dados para todas a Classes de Entidade(Entity) para facilitar a criação parcial delas.   
+Exemplo: na classe `Preferencia`
+```
+Preferencia preferencia = PreferenciaBuilder.builder()
+        .idUsuario(123)
+        .idioma("PT")
+        .addDiaSemana(DayOfWeek.MONDAY)
+        .addDiaSemana(DayOfWeek.WEDNESDAY)
+        .addTipoExercicio("Gramática")
+        .addTipoExercicio("Vocabulário")
+        .addTema("Animais")
+        .addTema("Comida")
+        .dificuldade("Médio")
+        .nivel("Intermediário")
+        .tempoMinutos(30)
+        .ativo(true)
+        .dataCriacao(new Date())
+        .build();
+```
+
 
 # 3 Integrantes
 - [IURI DE LIMA MARQUES](https://github.com/iurilimamarques)    
