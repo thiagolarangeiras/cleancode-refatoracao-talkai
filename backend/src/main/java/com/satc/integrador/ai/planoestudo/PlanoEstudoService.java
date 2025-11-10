@@ -33,7 +33,7 @@ public class PlanoEstudoService {
     private PreferenciaRepository preferenciaRepository;
 
     @Autowired
-    private ExercicioGramaticaComplementarRepo exercicioGramaticaComplementarRepo;
+    private ExercicioGramaticaComplementarRepository exercicioGramaticaComplementarRepository;
 
     @Autowired
     private ExercicioGramaticaOrdemRepository exercicioGramaticaOrdemRepository;
@@ -103,7 +103,7 @@ public class PlanoEstudoService {
             switch (exercicioCriado.getTipo()){
                 case TipoExercicio.GRAMATICA_COMPLEMENTAR: {
                     ExercicioGramaticaComplementar exercicio = buildExercicioGramaticaComplementar(exercicioCriado, planoEstudo, idOrdemExercicio);
-                    exercicioGramaticaComplementarRepo.save(exercicio);
+                    exercicioGramaticaComplementarRepository.save(exercicio);
                 } break;
                 case TipoExercicio.GRAMATICA_ORDEM: {
                     ExercicioGramaticaOrdem exercicio = buildExercicioGramaticaOrdem(exercicioCriado, planoEstudo, idOrdemExercicio);
@@ -195,10 +195,10 @@ public class PlanoEstudoService {
         UserDetailsImpl userDetails = SecurityUtil.getCurrentLoggedUser();
         PlanoEstudo planoEstudo = planoEstudoRepository.findByIdPlanoEstudoAndIdUsuario(id, userDetails.getUser().getId());
 
-        ExercicioGramaticaComplementar compl = exercicioGramaticaComplementarRepo.findByUsuario(idExercicio, id);
+        ExercicioGramaticaComplementar compl = exercicioGramaticaComplementarRepository.findByUsuario(idExercicio, id);
         if (compl != null){
             compl.setFinalizado(true);
-            exercicioGramaticaComplementarRepo.save(compl);
+            exercicioGramaticaComplementarRepository.save(compl);
         }
         ExercicioGramaticaOrdem ordem = exercicioGramaticaOrdemRepository.findByUsuario(idExercicio, id);
         if (ordem != null){

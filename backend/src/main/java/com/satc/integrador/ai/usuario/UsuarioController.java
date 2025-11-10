@@ -30,13 +30,6 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.getAll(page, count));
     }
 
-// TODO Verificar necessidade do metodo abaixo
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<Object> post(@RequestBody UsuarioPostDto dto) {
-//        return ResponseEntity.ok(usuarioService.post(dto));
-//    }
-
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> patch(@PathVariable("id") Integer id,

@@ -40,3 +40,7 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
+
+tasks.named<Test>("test") {
+    useJUnitPlatform() // ✅ Kotlin DSL
+}
