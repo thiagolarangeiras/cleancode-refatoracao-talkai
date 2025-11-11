@@ -1,19 +1,11 @@
 package com.satc.integrador.ai.exercicio;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.satc.integrador.ai.planoestudo.PlanoEstudo;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
-//{
-//    "tipo": "GRAMATICA_ORDEM",
-//    "dados": {
-//        "frase_completa": "Social media platforms influence how people communicate.",
-//        "ordem_correta": ["Social", "media", "platforms", "influence", "how", "people", "communicate."],
-//        "ordem_aleatoria": ["communicate.", "media", "Social", "influence", "platforms", "how", "people"]
-//    }
-//},
 
 @Getter
 @Setter
@@ -30,6 +22,7 @@ public class ExercicioGramaticaOrdem {
     @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_plano_estudo")
     private PlanoEstudo planoEstudo;

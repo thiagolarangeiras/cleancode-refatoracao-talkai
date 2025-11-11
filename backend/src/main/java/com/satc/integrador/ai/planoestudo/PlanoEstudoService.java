@@ -52,13 +52,16 @@ public class PlanoEstudoService {
         PlanoEstudoListaGetDto planoEstudoListaGetDto = new PlanoEstudoListaGetDto();
         List<PlanoEstudo> planosEstudosSalvos = planoEstudoRepository.findByIdUsuario(userDetails.getUser().getId());
         planoEstudoListaGetDto.setPlanos(planosEstudosSalvos);
+
         Integer completos = 0;
         for (PlanoEstudo planoEstudo : planosEstudosSalvos) {
             if (planoEstudo.getFinalizado()) {
                 completos++;
             }
         }
-        planoEstudoListaGetDto.setPorcentagemCompleta((completos * 100) / planosEstudosSalvos.size());
+        if (planosEstudosSalvos.size() > 0) {
+            planoEstudoListaGetDto.setPorcentagemCompleta((completos * 100) / planosEstudosSalvos.size());
+        }
         return planoEstudoListaGetDto;
     }
 
@@ -76,8 +79,8 @@ public class PlanoEstudoService {
         UserDetailsImpl userDetails = SecurityUtil.getCurrentLoggedUser();
         Preferencia preferencia = preferenciaRepository.findByIdUsuarioActive(userDetails.getUser().getId());
         List<ExercicioGpt> exerciciosCriados = handleGeracaoExercicios(preferencia);
-        PlanoEstudo planoNovo = createNewPlan(userDetails, preferencia, exerciciosCriados);
         disableOldPlan(userDetails);
+        PlanoEstudo planoNovo = createNewPlan(userDetails, preferencia, exerciciosCriados);
         buildExercicios(exerciciosCriados, planoNovo);
         return planoNovo;
     }
