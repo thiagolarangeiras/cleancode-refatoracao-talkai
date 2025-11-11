@@ -7,14 +7,6 @@ import lombok.*;
 
 import java.util.List;
 
-//{
-//    "tipo": "VOCABULARIO_PARES",
-//    "dados": {
-//        "pares_esquerda": ["Social", "media", "platforms", "influence", "how", "people", "communicate"],
-//        "pares_direita": ["Social", "midia", "plataforma", "influencia", "como", "pessoas", "comunicam"],
-//    }
-//},
-
 @Getter
 @Setter
 @Entity

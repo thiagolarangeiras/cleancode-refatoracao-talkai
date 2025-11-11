@@ -7,16 +7,6 @@ import lombok.*;
 
 import java.util.List;
 
-//{
-//    "tipo": "GRAMATICA_COMPLEMENTAR",
-//    "dados": {
-//        "frase_completa": "Social media platforms influence how people communicate.",
-//        "frase_incompleta": "Social media platforms ... how people communicate.",
-//        "opcao_correta": "influence",
-//        "opcao_incorreta": ["create", "follow", "interrupt"]
-//    }
-//},
-
 @Getter
 @Setter
 @Entity
