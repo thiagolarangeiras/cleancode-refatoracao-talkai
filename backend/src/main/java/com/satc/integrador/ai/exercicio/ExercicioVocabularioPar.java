@@ -1,18 +1,11 @@
 package com.satc.integrador.ai.exercicio;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.satc.integrador.ai.planoestudo.PlanoEstudo;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
-//{
-//    "tipo": "VOCABULARIO_PARES",
-//    "dados": {
-//        "pares_esquerda": ["Social", "media", "platforms", "influence", "how", "people", "communicate"],
-//        "pares_direita": ["Social", "midia", "plataforma", "influencia", "como", "pessoas", "comunicam"],
-//    }
-//},
 
 @Getter
 @Setter
@@ -30,6 +23,7 @@ public class ExercicioVocabularioPar {
     @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_plano_estudo")
     private PlanoEstudo planoEstudo;

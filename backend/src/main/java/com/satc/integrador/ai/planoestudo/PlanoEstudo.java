@@ -1,5 +1,6 @@
 package com.satc.integrador.ai.planoestudo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.satc.integrador.ai.enums.TipoExercicio;
 import com.satc.integrador.ai.exercicio.ExercicioGramaticaComplementar;
 import com.satc.integrador.ai.exercicio.ExercicioGramaticaOrdem;
@@ -48,12 +49,15 @@ public class PlanoEstudo {
     @Column(name = "finalizado")
     private Boolean finalizado;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
     private List<ExercicioGramaticaComplementar> exercicioGramaticaComplementares;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
     private List<ExercicioGramaticaOrdem> exercicioGramaticaOrdens;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "planoEstudo", fetch = FetchType.LAZY)
     private List<ExercicioVocabularioPar> exercicioVocabularioPares;
 

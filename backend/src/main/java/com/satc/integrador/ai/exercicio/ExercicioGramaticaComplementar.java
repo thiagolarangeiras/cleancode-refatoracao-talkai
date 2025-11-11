@@ -1,20 +1,11 @@
 package com.satc.integrador.ai.exercicio;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.satc.integrador.ai.planoestudo.PlanoEstudo;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
-//{
-//    "tipo": "GRAMATICA_COMPLEMENTAR",
-//    "dados": {
-//        "frase_completa": "Social media platforms influence how people communicate.",
-//        "frase_incompleta": "Social media platforms ... how people communicate.",
-//        "opcao_correta": "influence",
-//        "opcao_incorreta": ["create", "follow", "interrupt"]
-//    }
-//},
 
 @Getter
 @Setter
@@ -31,6 +22,7 @@ public class ExercicioGramaticaComplementar {
     @Column(name = "id_ordem_exercicio")
     private Integer idOrdemExercicio;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "id_plano_estudo")
     private PlanoEstudo planoEstudo;

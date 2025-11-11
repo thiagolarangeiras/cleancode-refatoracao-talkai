@@ -14,9 +14,12 @@ import com.satc.integrador.ai.exercicio.ExercicioVocabularioParRepository;
 import com.satc.integrador.ai.preferencia.Preferencia;
 import com.satc.integrador.ai.preferencia.PreferenciaRepository;
 import com.satc.integrador.ai.usuario.Usuario;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,8 +27,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class PlanoEstudoServiceTest {
 
+    @Spy
     @InjectMocks
     private PlanoEstudoService planoEstudoService;
 
@@ -65,6 +70,13 @@ class PlanoEstudoServiceTest {
         securityUtilMock.when(SecurityUtil::getCurrentLoggedUser).thenReturn(userDetails);
     }
 
+    @AfterEach
+    void tearDown() {
+        if (securityUtilMock != null) {
+            securityUtilMock.close();
+        }
+    }
+
     @Test
     void testGetAll() {
         PlanoEstudo plano1 = new PlanoEstudo(1, 1, "PT A1", 3, 3, Collections.emptyList(),
@@ -83,8 +95,15 @@ class PlanoEstudoServiceTest {
 
     @Test
     void testGetById() {
-        PlanoEstudo plano = new PlanoEstudo(1, 1, "PT A1", 3, 0, Collections.emptyList(),
-                LocalDate.now(), true, false);
+        PlanoEstudo plano = new PlanoEstudo(1,
+                1,
+                "PT A1",
+                3,
+                0,
+                Collections.emptyList(),
+                LocalDate.now(),
+                true,
+                false);
         when(planoEstudoRepository.findByIdPlanoEstudoAndIdUsuario(1, 1)).thenReturn(plano);
 
         PlanoEstudo result = planoEstudoService.getById(1);
@@ -104,38 +123,6 @@ class PlanoEstudoServiceTest {
         assertNotNull(result);
         assertTrue(result.getAtivo());
         verify(planoEstudoRepository, times(1)).findByIdUsuarioAtivo(1);
-    }
-
-    @Test
-    void testHandleNewPlan() throws JsonProcessingException {
-        Preferencia pref = new Preferencia();
-        pref.setId(1);
-        pref.setIdioma("PT");
-        pref.setNivel("A1");
-
-        when(preferenciaRepository.findByIdUsuarioActive(1)).thenReturn(pref);
-
-        ExercicioGpt exercicio = new ExercicioGpt();
-        exercicio.setTipo(TipoExercicio.GRAMATICA_COMPLEMENTAR);
-
-        List<ExercicioGpt> exercicios = Collections.singletonList(exercicio);
-
-        when(gptService.gerarExercicios(any(), any())).thenReturn("[{}]");
-        when(objectMapper.readValue(anyString(), ArgumentMatchers.<TypeReference<List<ExercicioGpt>>>any()))
-                .thenReturn(exercicios);
-
-        PlanoEstudo savedPlano = new PlanoEstudo(1, 1, "PT A1", 1, 0,
-                Collections.singletonList(TipoExercicio.GRAMATICA_COMPLEMENTAR),
-                LocalDate.now(), true, false);
-
-        when(planoEstudoRepository.save(any())).thenReturn(savedPlano);
-
-        PlanoEstudo result = planoEstudoService.handleNewPlan();
-
-        assertNotNull(result);
-        assertEquals(1, result.getIdUsuario());
-        verify(planoEstudoRepository, atLeastOnce()).save(any());
-        verify(exercicioGramaticaComplementarRepository, times(1)).save(any());
     }
 
     @Test

@@ -20,5 +20,5 @@ public class PreferenciaGetDto {
     private String nivel;
     private List<DayOfWeek> diaSemana;
     private Integer tempoMinutos;
-    private Boolean ativ;
+    private Boolean ativo;
 }
