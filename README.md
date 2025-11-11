@@ -122,7 +122,7 @@ Ao rodar o backend automaticamente o swagger sera servido em
 - Todas as classes e variáveis devem estar no singular, exceto quando utilizadas para listas.  
 - Todas as classes e variáveis devem estar em português, exceto para termos muito específicos de tecnologia, onde pode ser usado o inglês.
 
-## 2.2.2 Convenção de nomeação:
+### 2.2.2 Convenção de nomeação:
 - **PascalCase** para classes e tipos.  
 - **camelCase** para variáveis, funções e métodos.
 
@@ -134,7 +134,7 @@ Ao rodar o backend automaticamente o swagger sera servido em
 - Utilizado o formatador do IntelliJ, para formatar o codigo.
 
 ## 2.3 Testes
-Adicionado 1 teste para cada metodos dos services `PlanoEstudoService`, `PreferenciaService`, `UsuarioService` e 1 teste para cada metodo dos Controllers `PlanoEstudoController`, `PreferenciaController`, `UsuarioController` 
+Adicionado 1 plano teste para cada metodos dos services `PlanoEstudoService`, `PreferenciaService`, `UsuarioService` e 1 teste para cada metodo dos Controllers `PlanoEstudoController`, `PreferenciaController`, `UsuarioController` 
 
 ## 2.3 Interface fluente
 ### Proposta de interface fluente 1: 
