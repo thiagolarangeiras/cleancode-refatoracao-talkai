@@ -6,15 +6,9 @@ import com.satc.integrador.ai.preferencia.dto.PreferenciaPostDto;
 import com.satc.integrador.ai.usuario.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.time.DayOfWeek;
@@ -41,43 +35,47 @@ class PreferenciaServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(usuarioService.getCurrentUserid()).thenReturn(1);
+    }
+
+    @Test
+    void testGetAllFromUser() {
+        Preferencia preferencia = new Preferencia();
+        preferencia.setId(1);
+        when(repo.findByIdFromUser(1, 1)).thenReturn(preferencia);
+        PreferenciaGetDto dto = new PreferenciaGetDto(1,1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30,true);
+        when(mapper.map(preferencia, PreferenciaGetDto.class)).thenReturn(dto);
+        PreferenciaGetDto result = preferenciaService.getOneFromUser(1);
+        assertEquals(dto, result);
     }
 
     @Test
     void testGetOneFromUser() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
-        Preferencia pref = new Preferencia();
-        pref.setId(1);
-        when(repo.findByIdFromUser(1, 1)).thenReturn(pref);
+        Preferencia preferencia = new Preferencia();
+        preferencia.setId(1);
+        when(repo.findByIdFromUser(1, 1)).thenReturn(preferencia);
         PreferenciaGetDto dto = new PreferenciaGetDto(1,1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30,true);
-        when(mapper.map(pref, PreferenciaGetDto.class)).thenReturn(dto);
-
+        when(mapper.map(preferencia, PreferenciaGetDto.class)).thenReturn(dto);
         PreferenciaGetDto result = preferenciaService.getOneFromUser(1);
-
         assertEquals(dto, result);
     }
 
     @Test
     void testGetCurrent() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia pref = new Preferencia();
         pref.setId(1);
         when(repo.findByIdUsuarioActive(1)).thenReturn(pref);
         PreferenciaGetDto dto = new PreferenciaGetDto(1,1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30,true);
         when(mapper.map(pref, PreferenciaGetDto.class)).thenReturn(dto);
-
         PreferenciaGetDto result = preferenciaService.getCurrent();
-
         assertEquals(dto, result);
     }
 
     @Test
     void testPostDeativaAnterior() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia pActive = new Preferencia();
         pActive.setAtivo(true);
         when(repo.findByIdUsuarioActive(1)).thenReturn(pActive);
-
         PreferenciaPostDto postDto = new PreferenciaPostDto(1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30);
         Preferencia newPref = new Preferencia();
         newPref.setId(2);
@@ -85,9 +83,7 @@ class PreferenciaServiceTest {
         PreferenciaGetDto dto = new PreferenciaGetDto(2,1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30,true);
         when(mapper.map(newPref, PreferenciaGetDto.class)).thenReturn(dto);
         when(repo.save(any())).thenReturn(newPref);
-
         PreferenciaGetDto result = preferenciaService.post(postDto);
-
         assertEquals(dto, result);
         assertFalse(pActive.getAtivo());
         verify(repo).save(pActive);
@@ -96,12 +92,10 @@ class PreferenciaServiceTest {
 
     @Test
     void testPatchSuccess() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia existing = new Preferencia();
         existing.setId(1);
         existing.setIdUsuario(1);
         when(repo.findById(1)).thenReturn(Optional.of(existing));
-
         PreferenciaPostDto patchDto = new PreferenciaPostDto(1,"Espanhol",List.of(),List.of(),"Fácil","Básico",List.of(DayOfWeek.TUESDAY),20);
         Preferencia mapped = new Preferencia();
         when(mapper.map(patchDto, Preferencia.class)).thenReturn(mapped);
@@ -110,49 +104,39 @@ class PreferenciaServiceTest {
         when(repo.save(mapped)).thenReturn(saved);
         PreferenciaGetDto dto = new PreferenciaGetDto(1,1,"Espanhol",List.of(),List.of(),"Fácil","Básico",List.of(DayOfWeek.TUESDAY),20,true);
         when(mapper.map(saved, PreferenciaGetDto.class)).thenReturn(dto);
-
         PreferenciaGetDto result = preferenciaService.patch(1, patchDto);
-
         assertEquals(dto, result);
     }
 
     @Test
     void testPatchAccessDenied() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia existing = new Preferencia();
         existing.setId(1);
         existing.setIdUsuario(2); // outro usuário
         when(repo.findById(1)).thenReturn(Optional.of(existing));
-
         PreferenciaPostDto patchDto = new PreferenciaPostDto(1,"Espanhol",List.of(),List.of(),"Fácil","Básico",List.of(DayOfWeek.TUESDAY),20);
-
         assertThrows(AccessDeniedException.class, () -> preferenciaService.patch(1, patchDto));
     }
 
     @Test
     void testDeleteSuccess() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia existing = new Preferencia();
         existing.setId(1);
         existing.setIdUsuario(1);
         when(repo.findById(1)).thenReturn(Optional.of(existing));
         PreferenciaGetDto dto = new PreferenciaGetDto(1,1,"Inglês",List.of(),List.of(),"Médio","Intermediário",List.of(DayOfWeek.MONDAY),30,true);
         when(mapper.map(existing, PreferenciaGetDto.class)).thenReturn(dto);
-
         PreferenciaGetDto result = preferenciaService.delete(1);
-
         assertEquals(dto, result);
         verify(repo).delete(existing);
     }
 
     @Test
     void testDeleteAccessDenied() {
-        when(usuarioService.getCurrentUserid()).thenReturn(1);
         Preferencia existing = new Preferencia();
         existing.setId(1);
         existing.setIdUsuario(2);
         when(repo.findById(1)).thenReturn(Optional.of(existing));
-
         assertThrows(AccessDeniedException.class, () -> preferenciaService.delete(1));
     }
 }
