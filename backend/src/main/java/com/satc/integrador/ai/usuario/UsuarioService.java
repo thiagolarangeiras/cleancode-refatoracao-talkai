@@ -49,9 +49,13 @@ public class UsuarioService {
     }
 
     public UsuarioGetDto postLogin(UsuarioPostDto dto) {
-        Usuario usuario = mapper.map(dto, Usuario.class);
-        usuario.setPlano(Plano.NORMAL);
-        usuario.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+        Usuario usuario = UsuarioBuilder.builder()
+            .username(dto.getUsername())
+            .email(dot.getEmail())
+            .nomeCompleto(dto.getNomeCompleto())
+            .password(new BCryptPasswordEncoder().encode(dto.getPassword()))
+            .plano(Plano.NORMAL)
+            .build();
         usuario = usuarioRepository.save(usuario);
         return mapper.map(usuario, UsuarioGetDto.class);
     }
